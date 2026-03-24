@@ -8,17 +8,17 @@ services:
       - "6379:6379"
 
   api:
-    build: ./api
+    image: 519607954543.dkr.ecr.ap-south-1.amazonaws.com/devops-test-api:api
     container_name: api
     environment:
-      - REDIS_HOST=redis:6379   # 🔥 FIX
+      - REDIS_HOST=redis:6379
     depends_on:
       - redis
     ports:
       - "8080:8080"
 
   frontend:
-    build: ./app
+    image: 519607954543.dkr.ecr.ap-south-1.amazonaws.com/devops-test-api:app
     container_name: frontend
     depends_on:
       - api
