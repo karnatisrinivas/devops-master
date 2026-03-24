@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  api:
+    build: ./api
+    container_name: api
+    environment:
+      - REDIS_HOST=redis:6379   # 🔥 FIX
+    depends_on:
+      - redis
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./app
+    container_name: frontend
+    depends_on:
+      - api
+    ports:
+      - "3000:80"
