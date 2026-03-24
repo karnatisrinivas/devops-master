@@ -44,7 +44,7 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
           docker pull $ECR_API:latest
           docker pull $ECR_FRONTEND:latest
           cd /home/ubuntu/app
