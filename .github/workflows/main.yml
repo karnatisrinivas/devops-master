@@ -1,0 +1,53 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: ap-south-1
+  ECR_API: 519607954543.dkr.ecr.ap-south-1.amazonaws.com/devops-test-api
+  ECR_FRONTEND: 519607954543.dkr.ecr.ap-south-1.amazonaws.com/devops-test-api
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region $AWS_REGION | \
+          docker login --username AWS --password-stdin $ECR_API
+
+      - name: Build API
+        run: |
+          docker build -t api ./api
+          docker tag api:latest $ECR_API:api
+          docker push $ECR_API:api
+
+      - name: Build Frontend
+        run: |
+          docker build -t frontend ./app
+          docker tag frontend:latest $ECR_FRONTEND:app
+          docker push $ECR_FRONTEND:app
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_IP }} << 'EOF'
+          docker pull $ECR_API:latest
+          docker pull $ECR_FRONTEND:latest
+          cd /home/ubuntu/app
+          docker-compose down
+          docker-compose up -d
+          EOF
