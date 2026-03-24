@@ -114,8 +114,3 @@ To evolve this into a production-grade system:
 
 * Integrate **CloudWatch logs and metrics**
 
-👉 ECS + ALB production architecture
-👉 or a strong DevOps portfolio project write-up
-
-Just tell me 👍
-
