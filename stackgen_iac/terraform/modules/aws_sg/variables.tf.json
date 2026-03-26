@@ -1,0 +1,49 @@
+{
+    "variable": {
+        "name": [
+            {
+                "description": "Name of the security group",
+                "nullable": false,
+                "type": "string"
+            }
+        ],
+        "description": [
+            {
+                "description": "Security group description.",
+                "default": "Managed by Terraform.",
+                "type": "string"
+            }
+        ],
+        "vpc_id": [
+            {
+                "description": "VPC ID",
+                "nullable": true,
+                "type": "string"
+            }
+        ],
+        "egress": [
+            {
+                "description": "Configuration block for egress rules. Can be specified multiple times for each egress rule.",
+                "type": "list(object({ description: string, from_port: number, to_port: number, protocol: string, cidr_ipv4: string}))",
+                "default": [],
+                "nullable": true
+            }
+        ],
+        "ingress": [
+            {
+                "description": "Configuration block for ingress rules. Can be specified multiple times for each ingress rule.",
+                "type": "list(object({ description: string, from_port: number, to_port: number, protocol: string, cidr_ipv4: string}))",
+                "default": [],
+                "nullable": true
+            }
+        ],
+        "tags": [
+            {
+                "description": "A map of tags to add to the resource",
+                "type": "map(string)",
+                "nullable": true,
+                "default": {}
+            }
+        ]
+    }
+}
