@@ -1,7 +1,0 @@
-{
-  "app_stack_name": "fintech-app",
-  "iac_type": "Terraform",
-  "provider": "aws",
-  "multi_env": false,
-  "exporter": "terraform"
-}
